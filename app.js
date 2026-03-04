@@ -26,11 +26,11 @@ let allTasks=[], activeFilter='all', viewMode='grid', editingId=null, chosenPrio
 /* --- Storage --- */
 function loadTasks() {
   try {
-    allTasks = JSON.parse(localStorage.getItem('taskflow_tasks')) || [];
+    allTasks = JSON.parse(localStorage.getItem('planette_tasks')) || [];
     allTasks = allTasks.map(t => ({...t, priority: ['critical','high'].includes(t.priority) ? 'urgent' : 'normal'}));
   } catch { allTasks = []; }
 }
-const saveTasks = () => localStorage.setItem('taskflow_tasks', JSON.stringify(allTasks));
+const saveTasks = () => localStorage.setItem('planette_tasks', JSON.stringify(allTasks));
 const makeId    = () => Date.now().toString(36) + Math.random().toString(36).slice(2);
 
 /* --- Modal --- */
