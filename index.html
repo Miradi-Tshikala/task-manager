@@ -3,14 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Taskflow</title>
+  <title>Planette</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+<!-- HEADER -->
 <header>
-  <div class="logo"><span class="logo-dot"></span>Taskflow</div>
+  <div class="logo"><span class="logo-dot"></span>Planette</div>
   <nav class="nav-tabs">
     <button class="nav-tab active" onclick="showPage('tasks')">📋 Tasks</button>
     <button class="nav-tab"       onclick="showPage('calendar')">📅 Calendar</button>
@@ -20,48 +21,54 @@
 
 <main>
 
-  <!-- TASKS -->
+  <!-- ── TASKS PAGE ── -->
   <section class="page active" id="page-tasks">
-    <div class="toolbar">
-      <div class="toolbar-left">
-        <div class="search-box">
-          <span>🔍</span>
-          <input type="text" id="searchInput" placeholder="Search tasks…" oninput="refreshTaskList()">
-        </div>
-        <div class="select-wrap">
-          <select id="categoryFilter" class="cat-select" onchange="refreshTaskList()">
-            <option value="">🏷 All Categories</option>
-          </select>
-        </div>
 
-        <div class="filter-chips">
-          <button class="chip selected" onclick="setFilter('all',    this)">All</button>
-          <button class="chip urgent"   onclick="setFilter('urgent', this)">🔴 Urgent</button>
-          <button class="chip normal"   onclick="setFilter('normal', this)">🔵 Normal</button>
-          <button class="chip done"     onclick="setFilter('done',   this)">✓ Done</button>
-        </div>
+    <!-- Row 1: Search + Add button -->
+    <div class="toolbar-row">
+      <div class="search-box">
+        <span>🔍</span>
+        <input type="text" id="searchInput" placeholder="Search tasks…" oninput="refreshTaskList()">
       </div>
-      <div class="toolbar-right">
-        <div class="view-toggle">
-          <button class="view-btn selected" id="gridBtn" onclick="setView('grid')">⊞ Grid</button>
-          <button class="view-btn"          id="listBtn" onclick="setView('list')">☰ List</button>
-        </div>
-        <button class="btn-add" onclick="openModal()">＋ Add Task</button>
+      <button class="btn-add" onclick="openModal()">＋ Add</button>
+    </div>
+
+    <!-- Row 2: Category + View toggle -->
+    <div class="toolbar-row">
+      <div class="select-wrap">
+        <select id="categoryFilter" class="cat-select" onchange="refreshTaskList()">
+          <option value="">🏷 All Categories</option>
+        </select>
+      </div>
+      <div class="view-toggle">
+        <button class="view-btn selected" id="gridBtn" onclick="setView('grid')">⊞</button>
+        <button class="view-btn"          id="listBtn" onclick="setView('list')">☰</button>
       </div>
     </div>
 
+    <!-- Row 3: Filter chips -->
+    <div class="filter-chips">
+      <button class="chip selected" onclick="setFilter('all',    this)">All</button>
+      <button class="chip urgent"   onclick="setFilter('urgent', this)">🔴 Urgent</button>
+      <button class="chip normal"   onclick="setFilter('normal', this)">🔵 Normal</button>
+      <button class="chip done"     onclick="setFilter('done',   this)">✓ Done</button>
+    </div>
+
+    <!-- Task cards -->
     <div id="taskList"></div>
 
+    <!-- Stats -->
     <div class="stats-row">
-      <div class="stat-box">          <span class="stat-label">Total</span>   <span id="stat-total">0</span></div>
-      <div class="stat-box">          <span class="stat-label">Active</span>  <span id="stat-active">0</span></div>
-      <div class="stat-box green">    <span class="stat-label">Done</span>    <span id="stat-done">0</span></div>
-      <div class="stat-box red">      <span class="stat-label">Urgent</span>  <span id="stat-urgent">0</span></div>
-      <div class="stat-box orange">   <span class="stat-label">Overdue</span> <span id="stat-overdue">0</span></div>
+      <div class="stat-box">        <span class="stat-label">Total</span>   <span id="stat-total">0</span></div>
+      <div class="stat-box">        <span class="stat-label">Active</span>  <span id="stat-active">0</span></div>
+      <div class="stat-box green">  <span class="stat-label">Done</span>    <span id="stat-done">0</span></div>
+      <div class="stat-box red">    <span class="stat-label">Urgent</span>  <span id="stat-urgent">0</span></div>
+      <div class="stat-box orange"> <span class="stat-label">Overdue</span> <span id="stat-overdue">0</span></div>
     </div>
+
   </section>
 
-  <!-- CALENDAR -->
+  <!-- ── CALENDAR PAGE ── -->
   <section class="page" id="page-calendar">
     <div class="card">
       <div class="cal-header">
@@ -74,7 +81,7 @@
       </div>
       <div class="cal-body">
         <div class="cal-weekdays">
-          <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+          <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
         </div>
         <div class="cal-days" id="calDays"></div>
       </div>
@@ -82,7 +89,7 @@
     <div class="card" id="calDayDetail" style="display:none;"></div>
   </section>
 
-  <!-- HISTORY -->
+  <!-- ── HISTORY PAGE ── -->
   <section class="page" id="page-history">
     <h2 class="page-title">Task History</h2>
     <div id="historyList"></div>
@@ -95,7 +102,7 @@
   <div class="modal">
     <h2 class="modal-title" id="modalTitle">Add New Task</h2>
     <div class="field"><label>Title *</label><input class="field-input" type="text" id="inputTitle" placeholder="What needs to be done?"></div>
-    <div class="field"><label>Description</label><textarea class="field-input" id="inputDesc" rows="3" placeholder="Any extra details…"></textarea></div>
+    <div class="field"><label>Description</label><textarea class="field-input" id="inputDesc" rows="2" placeholder="Any extra details…"></textarea></div>
     <div class="field"><label>Category</label><input class="field-input" type="text" id="inputCategory" placeholder="e.g. Work, Personal…"></div>
     <div class="field">
       <label>Priority</label>
